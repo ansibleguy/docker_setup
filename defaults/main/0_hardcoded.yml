@@ -21,3 +21,4 @@ DOCKER_HC:
       - 'containerd.io'
     client:
       - 'docker-ce-cli'
+    compose: 'docker-compose-plugin'

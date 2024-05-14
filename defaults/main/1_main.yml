@@ -11,6 +11,7 @@ defaults_docker:
   compose:
     enable: false
     version: '2.18.0'
+    plugin: true  # use docker-compose-plugin instead of the old 'docker-compose'
   socket: '/var/run/docker.sock'
   tcp:
     enable: false

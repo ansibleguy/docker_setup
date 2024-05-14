@@ -40,17 +40,35 @@
     url: "{{ DOCKER_COMPOSE_DL }}"
     dest: '/usr/local/bin/docker-compose'
     mode: 0755
-  when: DOCKER.compose.enable | bool
+  when: DOCKER.compose.enable | bool and not DOCKER.compose.plugin | bool
 
 - name: Docker-Minimal | Linking docker-compose
   ansible.builtin.file:
     path: '/usr/bin/docker-compose'
     src: '/usr/local/bin/docker-compose'
     state: link
-  when: DOCKER.compose.enable | bool
+  when: DOCKER.compose.enable | bool and not DOCKER.compose.plugin | bool
+
+- name: Docker-Minimal | Removing deprecated docker-compose
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - '/usr/bin/docker-compose'
+    - '/usr/local/bin/docker-compose'
+  when: DOCKER.compose.enable | bool and DOCKER.compose.plugin | bool
+
+- name: Docker-Minimal | Installing docker-compose-plugin
+  ansible.builtin.apt:
+    name: "{{ DOCKER_HC.packages.compose }}"
+    state: present
+  when: DOCKER.compose.enable | bool and DOCKER.compose.plugin | bool
 
 - name: Docker-Minimal | Disabling IPTables for docker-compose
   ansible.builtin.copy:
-    content: "DOCKER_OPTS='{{ DOCKER_OPTS }}'"
+    content: "DOCKER_OPTS=\"{{ DOCKER_OPTS }}\""
     dest: '/etc/default/docker'
     mode: 0644
+  when: >
+    DOCKER.nftables.clean | bool or
+    DOCKER.nftables.disable_iptables | bool

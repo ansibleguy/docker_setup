@@ -12,6 +12,7 @@ Ansible Role to deploy a basic docker installation on a linux server.
 
 **Tested:**
 * Debian 11
+* Debian 12
 
 ## Install
 
@@ -75,7 +76,7 @@ docker:
 
   compose:
     enable: true  # install docker-compose
-    version: '2.15.1'  # version of docker-compose to install
+    plugin: true  # default; install docker-compose-plugin ('docker compose' instead of 'docker-compose')
 
   nftables:
     clean: true  # set bridge_none, disable_iptables and reload to true
