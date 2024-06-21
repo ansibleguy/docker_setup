@@ -23,3 +23,4 @@ defaults_docker:
     disable_iptables: false  # set iptables=false argument on docker-startup
     reload: false  # reload nftables after a docker.service restart to remove its auto-added iptables-rules
   address_pool: 'base=172.18.0.0/16,size=24'
+  mtu:  # default=1500
