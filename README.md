@@ -47,6 +47,13 @@ docker:
     enable: true  # install docker-compose
     plugin: true  # default; install docker-compose-plugin ('docker compose' instead of 'docker-compose')
 
+  tls:
+    enable: true
+    cert: '/etc/ssl/certs/docker.crt'
+    key: '/etc/ssl/private/docker.pem'
+    # ca: '/etc/ssl/certs/docker.ca.crt'
+    # verify_client: true
+
   nftables:
     clean: true  # set bridge_none, disable_iptables and reload to true
     bridge_none: false  # set bridge=none argument on docker-startup

@@ -24,3 +24,10 @@ defaults_docker:
     reload: false  # reload nftables after a docker.service restart to remove its auto-added iptables-rules
   address_pool: 'base=172.18.0.0/16,size=24'
   mtu:  # default=1500
+  # provide certificate to enable TLS transport
+  tls:
+    enable: false
+    cert: '/etc/ssl/certs/docker.crt'
+    key: '/etc/ssl/private/docker.pem'
+    ca:
+    verify_client: false

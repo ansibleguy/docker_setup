@@ -14,7 +14,16 @@ DOCKER_OPTS: "{% if DOCKER.nftables.clean | bool or DOCKER.nftables.bridge_none 
 {% if DOCKER.nftables.clean | bool or DOCKER.nftables.disable_iptables | bool %}\
  --iptables=false\
 {% endif %}\
-{% if DOCKER.mtu | default(none, true) is not none %} --mtu={{ DOCKER.mtu }}{% endif %}"
+{% if DOCKER.mtu | default(none, true) is not none %} --mtu={{ DOCKER.mtu }}{% endif %}\
+{% if DOCKER.tls.enable | bool %}\
+--tlscacert={{ DOCKER.tls.cert }} --tlskey={{ DOCKER.tls.key }}\
+{%   if DOCKER.tls.ca | default(none, true) is not none %}\
+--tlscacert={{ DOCKER.tls.ca }} \
+{%   endif %}\
+{%   if DOCKER.tls.verify_client | bool %}\
+--tlsverify \
+{%   endif %}\
+{% endif %}"
 DOCKER_SVC_CMD: "/usr/bin/dockerd {{ DOCKER_OPTS }}\
 {% if DOCKER.tcp.enable | bool %} -H tcp://{{ DOCKER.tcp.bind }}:{{ DOCKER.tcp.port }} --cgroup-parent 'docker.slice'{% endif %}
 -H unix://{{ DOCKER.socket }}"
