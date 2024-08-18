@@ -4,6 +4,7 @@
   ansible.builtin.apt:
     name: "{{ DOCKER_HC.packages.server }}"
     state: present
+  register: docker_installed
 
 - name: Docker-Minimal | Server | Removing daemon.json
   ansible.builtin.file:
@@ -41,7 +42,7 @@
     name: 'docker.service'
     state: restarted
     daemon_reload: yes
-  when: DOCKER.tcp.enable | bool
+  when: DOCKER.tcp.enable | bool or docker_installed.changed
 
 - name: Docker-Minimal | Server | Enabling/Starting docker service
   ansible.builtin.systemd:
